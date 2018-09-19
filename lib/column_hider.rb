@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "column_hider/version"
 
 module ColumnHider
@@ -21,21 +23,19 @@ module ColumnHider
 
     def columns
       @column_hider_columns ||= {} # just in case the model has "extend ColumnHider::ActiveRecordAttributes", but doesn't call column_hider_columns
-      super.reject { |col| @column_hider_columns.has_key?(col.name.to_sym) }
+      super.reject { |col| @column_hider_columns.key?(col.name.to_sym) }
     end
 
     def column_hider_deprecate_columns(*cols)
       cols.each do |c|
-        define_method("#{c}".to_sym) do
+        define_method(c.to_s.to_sym) do
           raise NoMethodError.new("column '#{c}' deprecated", c.to_sym)
         end
-        define_method("#{c}=".to_sym) do |arg|
+        define_method("#{c}=".to_sym) do |_arg|
           raise NoMethodError.new("column '#{c}' deprecated", c.to_sym)
         end
       end
       column_hider_columns(*cols)
     end
-
   end
-
 end

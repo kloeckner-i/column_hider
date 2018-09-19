@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_record/railtie"
 require "rails/test_unit/railtie"
 
@@ -7,4 +9,3 @@ module Dummy
   class Application < Rails::Application
   end
 end
-
